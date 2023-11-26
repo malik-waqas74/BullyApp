@@ -3,100 +3,93 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, KeyboardAvo
 import { Ionicons } from '@expo/vector-icons';
 
 import CustomLoadingAnimation from '../components/CustomLoadingAnimation';
+import useAbusiveAndThreatPrediction from '../services/api';
 
-import useApiRequest from '../services/api';
+// Function to check if the input contains Urdu characters
+const isUrduText = (text) => {
+  // Define a regular expression for Urdu characters
+  const urduRegex = /^[\u0600-\u06FF\s]+$/;
+  return urduRegex.test(text);
+};
 
 const TextInputScreen = () => {
+  const [input_text, setText] = useState('');
+  const [predictions, setPredictions] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [abuse, setAbuse] = useState('');
 
-    const [text, setText] = useState("");
-    const [showLoading, setShowLoading] = useState(false);
-    const abusiveUrl = 'http://192.168.71.175:8000/api/predictA/';
-    const threatUrl = 'http://192.168.71.175:8000/api/predictB/';
-  
-    const abusiveRequest = useApiRequest();
-    const threatRequest = useApiRequest();
-    const [abuse, setAbuse] = useState("");
-    const [threat, setThreat] = useState("");
-    const [displayResults, setDisplayResults] = useState(false);
-  
-    const handleSubmit = () => {
-      if (text.trim() == '') {
-        setAbuse("");
-        setThreat("");
-        setDisplayResults(false); // Reset display of results
-        return;
-  
-      }
-  
-      setShowLoading(true);
-      setDisplayResults(false); // Reset display of results
+  const { getPredictions } = useAbusiveAndThreatPrediction();
 
-  
-      // Fetch data
-      abusiveRequest.fetchData(abusiveUrl, 'POST', { text });
-      threatRequest.fetchData(threatUrl, 'POST', { text });
-  
-      // Set a timeout to stop the loading animation and display results
-      setTimeout(() => {
-        setShowLoading(false);
-        setDisplayResults(true); // Show results after timeout
-      }, 5000); // 5 seconds delay
-    };
-  
-    useEffect(() => {
-      if (abusiveRequest.data && abusiveRequest.data.Prediction) {
-        setAbuse(abusiveRequest.data.Prediction);
-      }
-      if (threatRequest.data && threatRequest.data.Pred) {
-        setThreat(threatRequest.data.Pred);
-      }
-    }, [abusiveRequest.data, threatRequest.data]);
+  const handlePredict = () => {
+    setLoading(true);
+    setShowLoading(true);
+    setError(null);
 
-    console.log(abuse)
-  
-    const getTextColor = (prediction) => {
-      return prediction === 'Non Abusive' || prediction === 'Non Threat' ? 'green' : 'red';
-    };
-  
-    return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <Text style={{ fontSize: 30, color: "#4267B2", marginBottom: 30 }}>Analyze your text</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            value={text}
-            onChangeText={setText}
-            placeholder="What's on your mind?"
-            placeholderTextColor="#90949C"
-            style={styles.textInput}
-            multiline
-          />
-        </View>
-        <TouchableOpacity onPress={handleSubmit} style={styles.checkButton}>
-          <Ionicons name="checkmark-circle" size={24} color="white" />
-          <Text style={styles.checkButtonText}>Check</Text>
-        </TouchableOpacity>
+    getPredictions(input_text)
+      .then(([abusiveResponse, threatResponse]) => {
+        setPredictions({
+          abusive: abusiveResponse.data.prediction,
+          threat: threatResponse.data.prediction,
+        });
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 5000);
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-        {showLoading && <CustomLoadingAnimation isLoading={showLoading} />}
-      {!showLoading && displayResults && text.trim() !== '' && (
+  const getTextColor = (prediction) => {
+    return prediction === 'Non Abusive' || prediction === 'Non Threat' ? 'green' : 'red';
+  };
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+      <Text style={{ fontSize: 30, color: '#4267B2', marginBottom: 30 }}>Analyze your text</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={input_text}
+          onChangeText={(text) => {
+            setText(text);
+            // Check if the input contains Urdu characters and clear predictions if not
+            if (!isUrduText(text)) {
+              setPredictions({});
+            }
+          }}
+          placeholder="اپنا متن یہاں لکھیں"
+          placeholderTextColor="#90949C"
+          style={styles.textInput}
+          multiline
+          inputMode='text'
+          keyboardAppearance='default'
+          
+        />
+      </View>
+      <TouchableOpacity onPress={handlePredict} style={styles.checkButton}>
+        <Ionicons name="checkmark-circle" size={24} color="white" />
+        <Text style={styles.checkButtonText}>Check</Text>
+      </TouchableOpacity>
+
+      {showLoading && <CustomLoadingAnimation isLoading={showLoading} />}
+      {!showLoading && input_text.trim() !== '' && Object.keys(predictions).length > 0 && (
         <>
           <View style={styles.resultContainer}>
-            <Text style={{ ...styles.resultText, color: getTextColor(abuse) }}>
-               {abuse}
-            </Text>
+            <Text style={{ ...styles.resultText, color: getTextColor(predictions.abusive) }}>{predictions.abusive}</Text>
           </View>
           <View style={styles.resultContainer}>
-            <Text style={{ ...styles.resultText, color: getTextColor(threat) }}>
-               {threat}
-            </Text>
+            <Text style={{ ...styles.resultText, color: getTextColor(predictions.threat) }}>{predictions.threat}</Text>
           </View>
         </>
       )}
-      </KeyboardAvoidingView>
-    );
-  };
+    </KeyboardAvoidingView>
+  );
+};
 
 
 const styles = StyleSheet.create({
@@ -125,6 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#1C1E21',
     lineHeight: 24,
+    textAlign:"right"
   },
   checkButton: {
     flexDirection: 'row',

@@ -8,12 +8,7 @@ const Header = ({ onMessagesPress }) => {
       <Text style={styles.headerTitle}>Abuse-Detector</Text>
 
       {/* Optional: Additional navigation items */}
-      <View style={styles.navItems}>
-        <TouchableOpacity onPress={onMessagesPress}>
-          <Ionicons name="chatbubbles-outline" size={24} color="white" />
-        </TouchableOpacity>
-        {/* Add more icons or text here as needed */}
-      </View>
+      
     </View>
   );
 };
@@ -30,7 +25,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: 'white',
     fontSize: 30,
-    fontWeight: '600',
+    fontWeight: '400',
 
   },
   navItems: {

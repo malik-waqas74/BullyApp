@@ -3,69 +3,63 @@ import { View, Text,Alert, StyleSheet, TouchableOpacity, TextInput, Image } from
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import useFirebase from '../hook/useFirebase';
 import CustomLoadingAnimation from '../components/CustomLoadingAnimation';
-import useApiRequest  from '../services/api';
+import useAbusiveAndThreatPrediction from '../services/api';
 const CreatePostScreen = ({ navigation }) => {
   const { user, createPost, fetchUserProfile } = useFirebase();
-  const [text,setText] = useState('');
+  const [input_text,setText] = useState('');
+  const [showLoading, setShowtLoading] = useState(false);
+  const[loading,setLoading] = useState(false);
 
   const [userdata, setUserData] = useState({
     name: '',
     imageUri: '',
   });
-   const [showLoading, setShowLoading] = useState(false);
-    const abusiveUrl = 'http://192.168.71.175:8000/api/predictA/';
-    const threatUrl = 'http://192.168.71.175:8000/api/predictB/';
-  
-    const abusiveRequest = useApiRequest();
-    const threatRequest = useApiRequest();
+  const [error, setError] = useState(null);
 
-    const [displayResults, setDisplayResults] = useState(false);
-    const handleSubmit = async () => {
-    if (!text.trim()) {
-      Alert.alert("Input Error", "Please enter some text before posting.");
+  const { getPredictions } = useAbusiveAndThreatPrediction();
+
+  const isUrduText = (text) => {
+    // Regular expression to match Urdu characters
+    const urduRegex = /[\u0600-\u06FF]/;
+    return urduRegex.test(text);
+  };
+  
+
+  const handleSubmit =() => {
+    if (!isUrduText(input_text)) {
+      Alert.alert("Warning!", "Please enter text in Urdu.");
+      setLoading(false);
+      setShowtLoading(false);
       return;
     }
+    
+    setLoading(true);
+    setShowtLoading(true);
+      getPredictions(input_text)
+          .then(([abusiveResponse, threatResponse]) => {
+            console.log('Inside .then block');
+          
+            handleSubmitPost(abusiveResponse.data.prediction,threatResponse.data.prediction);
+            setShowtLoading(false)
+
+
+          })
+
+          .catch((e) => {
+              setError(e.message);
+          })
+          .finally(() => {
+              setLoading(false);
+          })
+  }
+
   
-    setShowLoading(true);
-    
-    try {
-      // Fetching abuse data
-      const abuseResponse = await abusiveRequest.fetchData(abusiveUrl, 'POST', { text });
-      const abusePrediction = abuseResponse?.Prediction || "";
-      
-      // Fetching threat data
-      const threatResponse = await threatRequest.fetchData(threatUrl, 'POST', { text });
-      const threatPrediction = threatResponse?.Pred || "";
-
-      console.log("Abuse Prediction: ", abusePrediction);
-      console.log("Threat Prediction: ", threatPrediction);
-
-      handleSubmitPost(abusePrediction, threatPrediction);
-    } catch (error) {
-      console.error("Error in API call:", error);
-      Alert.alert("Error", "Failed to process request. Please try again.");
-    } finally {
-      setShowLoading(false);
-      setDisplayResults(true);
-    }
-  };
-    
-    const handleSubmitPost = async (abuse, threat) => {
-      // Update the states with the latest predictions
-    
-      if (abuse === "Abusive" && threat === "Threat") {
-        Alert.alert("Notice:", "Threat/Abusive Post");
-      } 
-      else if (abuse === "Abusive") {
-        Alert.alert("Notice:", "Abusive Content Detected");
-      } 
-      else if (threat === "Threat") {
-        Alert.alert("Notice:", "Threatening Content Detected");
-      } 
-      else if (abuse === "Non Abusive" && threat === "Non Threat") {
+    const handleSubmitPost = async (a,b) => {
+   
+      if (a !== "Abusive" && b !== "Threat") {
         try {
           await createPost({
-            text: text,
+            text: input_text,
             authorId: user.uid,
             // Additional post details
           });
@@ -76,9 +70,27 @@ const CreatePostScreen = ({ navigation }) => {
           Alert.alert("Error", "Failed to create post. Please try again.");
         }
       }
-    
-    };
-    
+
+      else if(a==="Abusive" && b==="Threat"){
+        Alert.alert("Warning!", "Threat and Abusive Post!");
+
+
+      }
+      else if(a==="Abusive"){
+        Alert.alert("Warning!", "Abusive Content Post!");
+
+
+      }else if(b==="Threat"){
+        Alert.alert("Warning!", "Threatning Content Post!");
+
+
+      }
+      
+
+     
+      
+    }
+      
 
 
 
@@ -122,9 +134,9 @@ const CreatePostScreen = ({ navigation }) => {
         <Text style={styles.profileName}>{userdata.name}</Text>
       </View>
       <TextInput
-        value={text}
+        value={input_text}
         onChangeText={setText}
-        placeholder="What's on your mind?"
+        placeholder="اپنا متن یہاں لکھیں"
         style={styles.postInput}
         multiline
       />
@@ -189,6 +201,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 8,
     paddingBottom: 100, // Ample space for typing long texts
+    textAlign:"right"
   },
 });
 
