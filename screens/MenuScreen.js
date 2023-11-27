@@ -56,14 +56,14 @@ const MenuScreen = ({ navigation }) => {
       <TouchableOpacity onPress={() => {
         navigation.navigate('ChangeInfo');
       }} style={styles.menuItem}>
-        <Ionicons name="information-circle-outline" size={24} color="#4267B2" />
+        <Ionicons name="information-circle-outline" size={24} color="#00A4BD" />
         <Text style={styles.menuItemText}>Change Info</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => {
         navigation.navigate('ChangePassword');
       }} style={styles.menuItem}>
-        <Ionicons name="key-outline" size={24} color="#4267B2" />
+        <Ionicons name="key-outline" size={24} color="#00A4BD" />
         <Text style={styles.menuItemText}>Change Password</Text>
       </TouchableOpacity>
 
@@ -71,7 +71,7 @@ const MenuScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => {
           navigation.navigate('ReportedPost');
         }} style={styles.menuItem}>
-          <Ionicons name="shield-checkmark-outline" size={24} color="#4267B2" />
+          <Ionicons name="shield-checkmark-outline" size={24} color="#00A4BD" />
           <Text style={styles.menuItemText}>See Reported Posts</Text>
         </TouchableOpacity>
       )}
@@ -79,7 +79,7 @@ const MenuScreen = ({ navigation }) => {
       <TouchableOpacity onPress={() => {
        handleLogout();
       }} style={styles.menuItem}>
-        <Ionicons name="log-out-outline" size={24} color="#4267B2" />
+        <Ionicons name="log-out-outline" size={24} color="#00A4BD" />
         <Text style={styles.menuItemText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -89,16 +89,16 @@ const MenuScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
   },
   profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: '#00A4BD',
     paddingVertical: 20,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#DADDE1',
+    borderBottomColor: '#00A4BD',
     marginBottom: 10,
   },
   profilePic: {
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   profileName: {
-    color: '#1C1E21',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   menuItemText: {
-    color: '#4267B2',
+    color: '#00A4BD',
     marginLeft: 10,
     fontSize: 16,
   },

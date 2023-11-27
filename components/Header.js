@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const Header = ({ onMessagesPress }) => {
+const Header = () => {
   return (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>Abuse-Detector</Text>
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#4267B2', // Facebook blue
+    backgroundColor: '#00A4BD', 
     paddingVertical: 10,
     paddingHorizontal: 15,
   },

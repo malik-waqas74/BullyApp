@@ -15,10 +15,10 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-
   useEffect(() => {
+    // Initial fetch of posts
     fetchPosts();
-  }, []);
+  }, []); // The empty dependency array ensures this effect runs only once on mount.
 
   const fetchPosts = async () => {
     setRefreshing(true);
@@ -26,9 +26,10 @@ const HomeScreen = ({ navigation }) => {
       const allPosts = await getAllPosts();
       setPosts(allPosts);
     } catch (error) {
-      
+      // Handle error
+    } finally {
+      setRefreshing(false);
     }
-    setRefreshing(false);
   };
 
   const handleToggleLike = async (postId) => {
@@ -60,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
 
   const renderHeader = () => (
     <TouchableOpacity onPress={() => navigation.navigate('CreatePost')} style={styles.whatOnMind}>
-      <Text style={styles.whatOnMindText}>What's on your mind?</Text>
+      <Text style={styles.whatOnMindText}>Share your thoughts?</Text>
     </TouchableOpacity>
   );
 
@@ -78,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.authorDetails}>
             <Text style={styles.authorName}>{item.authorName}</Text>
             <TouchableOpacity style={styles.postOptions} onPress={() => openModal(item.id)}>
-              <MaterialCommunityIcons name="dots-vertical" size={20} color="#65676b" />
+              <MaterialCommunityIcons name="dots-vertical" size={20} color="black" />
             </TouchableOpacity>
           </View>
         </View>
@@ -89,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
             <Ionicons
               name={isLiked ? "heart" : "heart-outline"}
               size={24}
-              color={isLiked ? "red" : "black"}
+              color={isLiked ? "#00A4BD" : "black"}
             />
             <Text style={[styles.actionText, isLiked && styles.likedText]}>{item.likes.length} Likes</Text>
           </TouchableOpacity>
@@ -143,7 +144,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
   },
   whatOnMind: {
     backgroundColor: '#FFF',
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
   postHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 4,
   },
   authorDetails: {
     flex: 1,
@@ -210,11 +211,11 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginLeft: 8,
-    color: '#65676B',
+    color: '#000',
     fontSize: 16,
   },
   likedText: {
-    color: '#2078F4',
+    color: '#00A4BD',
   },
   centeredView: {
     position: 'absolute',
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E7F3FF',
   },
   textStyle: {
-    color: '#2E89FF',
+    color: 'red',
     fontWeight: 'bold',
     textAlign: 'center',
   },

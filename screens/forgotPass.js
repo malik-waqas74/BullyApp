@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#97B8BD',
     padding: 20,
   },
   logo: {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#4267B2', // Facebook blue
+    backgroundColor: '#00A4BD', // Facebook blue
     height: 50,
     width: '90%',
     justifyContent: 'center',

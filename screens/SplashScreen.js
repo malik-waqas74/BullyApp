@@ -33,7 +33,7 @@ const Splash = ({ navigation }) => {
       <View style={styles.textContainer}>
         <Text style={styles.dots}>{dots}</Text>
 
-        <Text style={styles.text}>Made By M_A_W</Text>
+        <Text style={styles.text}>Getting Started</Text>
       </View>
     </View>
   );
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#4267B2',
+    backgroundColor: '#97B8BD',
     paddingVertical: windowHeight * 0.3 // Adjust this value to control the vertical spacing
   },
   logo: {

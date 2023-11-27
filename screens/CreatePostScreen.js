@@ -164,12 +164,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    color: '#4267B2',
+    color: '#00A4BD',
     fontSize: 18,
     marginLeft: 10,
   },
   postButton: {
-    backgroundColor: '#4267B2',
+    backgroundColor: '#00A4BD',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 4,

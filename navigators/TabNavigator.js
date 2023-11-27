@@ -30,7 +30,7 @@ const TabNavigator = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#4267B2', // Facebook Blue
+        tabBarActiveTintColor: '#00A4BD', // Facebook Blue
         tabBarInactiveTintColor: 'gray',
       })}
     >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Alert,TouchableHighlight } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import useFirebase from '../hook/useFirebase';
@@ -76,6 +76,8 @@ const ReportedPostScreen = () => {
 
   return (
     <View style={styles.container}>
+   <TouchableHighlight style={{width:"100%",backgroundColor:"#00A4BD",height:"25",marginBottom:5,alignItems:"left",justifyContent:"center",padding:12}}><Text style={{ fontSize: 30, color: '#fff' }}>Reported Posts</Text></TouchableHighlight>
+
       <FlatList
         data={reportedPosts}
         renderItem={renderPost}
@@ -89,13 +91,14 @@ const ReportedPostScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
   },
   postContainer: {
     backgroundColor: '#FFFFFF',
     padding: 20,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: '#DADDE1',
+    marginBottom:30,
   },
   postAuthor: {
     fontSize: 16,

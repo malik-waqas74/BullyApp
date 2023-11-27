@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform ,TouchableHighlight} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import CustomLoadingAnimation from '../components/CustomLoadingAnimation';
@@ -51,7 +51,7 @@ const TextInputScreen = () => {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <Text style={{ fontSize: 30, color: '#4267B2', marginBottom: 30 }}>Analyze your text</Text>
+      <TouchableHighlight style={{width:"86%",backgroundColor:"#00A4BD",height:"25",marginBottom:30,alignItems:"center",justifyContent:"center",padding:12,borderRadius:15}}><Text style={{ fontSize: 30, color: '#fff' }}>Analyze your text</Text></TouchableHighlight>
       <View style={styles.inputContainer}>
         <TextInput
           value={input_text}
@@ -95,7 +95,7 @@ const TextInputScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
     justifyContent: 'center',
     padding: 20,
     alignItems:"center"
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   checkButton: {
     flexDirection: 'row',
-    backgroundColor: '#4267B2',
+    backgroundColor: '#00A4BD',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 30,

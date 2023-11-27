@@ -76,7 +76,7 @@ const ChangePasswordScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
     paddingHorizontal: 30,
     paddingTop:130
   },
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#4267B2',
+    backgroundColor: '#00A4BD',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',

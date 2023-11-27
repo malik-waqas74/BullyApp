@@ -114,7 +114,7 @@ const ProfileScreen = ({ navigation }) => {
             <MaterialCommunityIcons name="account-circle" size={40} color="#65676b" />
           )}
           <View style={styles.authorDetails}>
-            <Text style={styles.authorName}>{item.authorName}</Text>
+            <Text style={[styles.authorName,]}>{item.authorName}</Text>
             <TouchableOpacity style={styles.postOptions} onPress={() =>
               openPostOptionsModal(item)
             }>
@@ -129,9 +129,9 @@ const ProfileScreen = ({ navigation }) => {
             <Ionicons
               name={isLiked ? "heart" : "heart-outline"}
               size={24}
-              color={isLiked ? "red" : "black"}
+              color={isLiked ? "#00A4BD" : "black"}
             />
-            <Text style={[styles.actionText, isLiked && styles.likedText]}>{item.likes.length} Likes</Text>
+            <Text style={[styles.actionText, isLiked && styles.likedText,{color:"#00A4BD"}]}>{item.likes.length} Likes</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -147,7 +147,7 @@ const ProfileScreen = ({ navigation }) => {
           <MaterialCommunityIcons name="account-circle" size={100} color="gray" />
         )}
       </TouchableOpacity>
-      <Text style={styles.userName}>{userdata.name}</Text>
+      <Text style={[styles.userName,{color:"#fff"}]}>{userdata.name}</Text>
     </View>
   );
 
@@ -195,13 +195,13 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#97B8BD',
   },
   profileHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#FFF',
+    backgroundColor: '#00A4BD',
   },
   profilePic: {
     width: 100,
