@@ -312,7 +312,6 @@ export default function useFirebase() {
       throw error;
     }
   };
-
   const usePasswordReset = () => {
     const [error, setError] = useState(null);
     const [isSent, setIsSent] = useState(false);
@@ -323,7 +322,13 @@ export default function useFirebase() {
             setIsSent(true);
             setError(null);
         } catch (error) {
-            setError(error.message);
+            if (error.code === 'auth/user-not-found') {
+                // This error code indicates that the user does not exist
+                setError('No user found with this email address.');
+            } else {
+                // Handle other errors
+                setError(error.message);
+            }
             setIsSent(false);
         }
     };
